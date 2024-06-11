@@ -1,0 +1,93 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Inventario SoftCoffe</title>
+  <link rel="stylesheet" href="{% static 'css/style-menu.css' %}" />
+
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Anton&display=swap" rel="stylesheet">
+</head>
+
+<body>
+  <div class="menu-container">
+    <header>
+      <div>
+        <h1 class="restaurant-name">SoftCoffe</h1>
+      </div>
+      <div><img src="{% static 'img/carrito.png' %}" onclick="mostrarCarrito()"></div>
+    </header>
+
+    <div id="modalCarrito" class="modal">
+      <div class="modal-content">
+        <span class="close" onclick="cerrarModalCarrito()">&times;</span>
+        <h2>Carrito de Compras</h2>
+        <div class="carrito-table-container">
+          <table id="carrito">
+            <thead>
+              <tr>
+                <th>Producto</th>
+                <th>Cantidad</th>
+                <th>Precio</th>
+                <th>Subtotal</th>
+                <th>Acciones</th>
+              </tr>
+            </thead>
+            <tbody id="cuerpo-carrito">
+              <!-- Los productos se insertarán aquí -->
+            </tbody>
+          </table>
+        </div>
+
+        <div class="carrito-footer">
+          <div class="carrito-total">
+            <p>Total: $<input type="text" id="precio-total" readonly></p>
+          </div>
+          <div class="carrito-pagar">
+            <button onclick="mostrarModalFormulario()">Pagar</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div id="modal-formulario" class="modal">
+      <div class="modal-content">
+        <span class="close" onclick="cerrarModal()">&times;</span>
+        <h2>Ingrese su nombre y correo electrónico</h2>
+        <form id="formulario" onsubmit="obtenerDatosFormulario(); return false;">
+          <label for="nombre">Nombre:</label>
+          <input type="text" id="nombre" required>
+          <label for="correo">Correo electrónico:</label>
+          <input type="email" id="correo" required>
+          <button type="submit">Enviar</button>
+        </form>
+      </div>
+    </div>
+
+    <main>
+      <div class="menu">
+        {% for producto in productos %}
+        <div class="menu-item">
+          <img src="{{ producto.imagen }}" alt="{{ producto.nombre }}" class="product-image">
+          <div class="product-details">
+            <h2 class="product-name">{{ producto.nombre }}</h2>
+            <p class="product-description">{{ producto.descripcion }}</p>
+            <p class="product-price">${{ producto.precio }}</p>
+            <button class="add-to-cart" onclick="agregarAlCarrito({{ producto.id }}, '{{ producto.nombre }}',
+              {{ producto.precio }}, {{producto.cantidad}})">Agregar al Carrito</button>
+          </div>
+        </div>
+        {% endfor %}
+      </div>
+    </main>
+  </div>
+
+  
+</body>
+<script src="{% static 'js/carrito.js' %}"></script>
+</html>
